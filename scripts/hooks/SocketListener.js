@@ -1,0 +1,136 @@
+import { MODULE } from "../moduleConstants.js";
+import { TradeHelper } from "../helper/TradeHelper.js";
+
+/**
+ * @module lootsheetnpct2k4e.Hooks.SocketListener
+ *
+ * @description The modules generic SocketListener
+ *
+ * @exposes {SocketListener.handleRequest}
+ * @author Daniel Böttner <@DanielBoettner>
+ * @version 1.0.0
+ * @since 3.4.5.3
+ *
+ * @uses module:data/moduleConstants
+ * @uses module:helper/tokenHelper
+ * @uses module:helper/TradeHelper
+ *
+ */
+export class SocketListener {
+
+    /**
+     * @summary Handle the incoming request packet
+     * @description This is the main socket listener method.
+     *
+     * @example
+     *
+     * ```js
+     * const packet = {
+     *   action: string,
+     *   triggerActorId: string,
+     *   [...]
+     * };
+     * await SocketListener.handleRequest(packet);
+     * ```
+     * @param {object} packet
+     * @returns {Promise<void>}
+     */
+    static async handleRequest(packet) {
+        let triggeringActor = game.actors.get(packet.triggerActorId),
+            action = packet.action || packet;
+
+        console.log(`${MODULE.ns} | handleRequest | data`, packet);
+
+        if (game.user.isGM && !triggeringActor) {
+            triggeringActor = {
+                name: game.user.name,
+                data: {
+                    img: game.user.avatar
+                }
+            };
+            console.log(triggeringActor);
+        }
+
+        if (action === "error") {
+            const msg = packet.message || " | socketListener | InvalidData ";
+            ui.notifications.error(MODULE.ns + ' | ' + msg);
+            console.log(`${MODULE.ns} | handleRequest | Transaction Error: `, packet);
+            return;
+        }
+
+        if (action === 'sheetUpdate') {
+            //re render the sheet for the token.
+            return this._handleRerender(packet.tokenUuid);
+        }
+
+        if (!triggeringActor && !game.user.isGM) {
+            ui.notifications.error(`${MODULE.ns} | handleRequest | Exception | Could not get triggering user character. See console. (F12)`);
+            console.error(`${MODULE.ns} | handleRequest | Exception | Could not get triggering game.user`, packet);
+            return;
+        }
+
+        if (game.user.isGM && packet.processorId === game.user.id) {
+            const targetToken = await fromUuid(packet.tokenUuid);
+            if (!targetToken)
+                return ui.notifications.error(MODULE.ns + " | socketListener | Exception | Could not find a token with the uuid: " + packet.tokenUuid);
+
+            // prepare the options object
+            const options = {
+                quantity: packet.quantity,
+                verbose: packet?.verbose || false,
+                chatOutPut: true
+            };
+
+            // check the action type and call the apprpriate function
+            switch (action) {
+                case "buyItem":
+                    options.type = 'sell';
+                    await TradeHelper.transaction(targetToken.actor, triggeringActor, packet.targetItemId, packet.quantity, options);
+                    break;
+                case "tradeItems":
+                    await TradeHelper.tradeItems(targetToken.actor, triggeringActor, packet.trades, options);                    
+                    break;
+                case "lootAll":
+                    options.type = 'loot';
+                    await TradeHelper.lootAllItems(targetToken.actor, triggeringActor);
+                    break;
+                case "lootItem":
+                    let items = [{ id: packet.targetItemId, data: { data: { quantity: packet.quantity } } }];
+                    options.type = 'loot';
+                    await TradeHelper.lootItems(targetToken.actor, triggeringActor, items, options);
+                    break;
+                case 'sheetUpdate':                //re-render the sheet for the token.
+                    return this._handleRerender(packet.tokenUuid);
+                default:
+                    console.warn(`${MODULE.ns} | socketListener | Info | listend to an unhandled action: ${action}`);
+            }
+        }
+    }
+
+    /**
+	 *
+	 * Rerender an {ActorSheet} if it is currently being displayed.
+	 *
+	 * @param {string} uuid of the sheet to be rerendered
+	 * @returns
+	 */
+	static async _handleRerender(uuid) {
+		const token = await fromUuid(uuid);
+		if (!token?.actor?._sheet) return;
+
+		const sheet = token.actor.sheet,
+			priorState = sheet ? sheet?._state : 0;
+
+		console.log(`${MODULE.ns} | token Helper | handleRerender | Rerendering attempt of the actor sheet for token: ${token.name}`);
+
+		if (sheet.rendered || priorState > 0 && !game.user.isGM) {
+			await sheet.close();
+			console.log(`${MODULE.ns} | token Helper | handleRerender | Sanity check - This state should be false: ${sheet.rendered}`);
+			// Deregister the old sheet class
+			token.actor._sheet = null;
+			delete token.actor.apps[sheet.appId];
+			await sheet.render(true, token.actor.options);
+			console.log(`${MODULE.ns} | token Helper | handleRerender | Sanity check - This state should be true: ${sheet.rendered}`);
+		}
+	}
+}

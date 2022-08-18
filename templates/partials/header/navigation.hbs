@@ -1,0 +1,10 @@
+
+{{!-- Sheet Tab Navigation --}}
+<nav class="sheet-tabs slanted-tabs flexrow flex-center" data-group="primary">
+    {{#if isGM}}
+        <a class="item" data-tab="gm-settings"><i class="fas fa-cog" title="{{localize " GM"}}"></i></a>
+    {{/if}}
+
+    <a class="item" data-tab="equipment">{{localize "T2K4E.ActorSheet.EquipmentTab"}}</a>
+    <a class="item" data-tab="description">{{localize "T2K4E.ActorSheet.NoteTab"}}</a>
+</nav>

@@ -1,0 +1,50 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+    {{!-- Actor Sheet Header --}}
+    <header class="sheet-header">
+
+        {{!-- Profile IMG & XP --}}
+        <div class="img" style="flex: 0; margin-right: 5px">
+            <img class="profile" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="64" width="64"/>
+            <img class="" src="systems/t2k4e/assets/textures/trombone.png" id="trombone"
+                 style="position: absolute; top: 30px; left: 108px; transform: rotate(20deg); -webkit-transform: rotate(20deg); border: none; z-index: 999"/>
+        </div>
+
+        {{!-- Actor's name --}}
+        <h1 class="name">
+            <input type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'T2K4E.ActorSheet.Name'}}"/>
+        </h1>
+
+    </header>
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs slanted-tabs flexrow flex-center" data-group="primary">
+        {{#if isGM}}
+            <a class="item" data-tab="gm-settings"><i class="fas fa-cog" title="{{localize " GM"}}"></i></a>
+        {{/if}}
+
+        <a class="item" data-tab="equipment">{{localize "T2K4E.ActorSheet.EquipmentTab"}}</a>
+        <a class="item" data-tab="description">{{localize "T2K4E.ActorSheet.NoteTab"}}</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{#if isGM}}
+            <div class="tab" data-tab="gm-settings" data-group="primary">
+                {{> "modules/t2k4e-loot-sheet-npc/templates/partials/gm/gm-settings.hbs"}}
+            </div>
+        {{/if}}
+
+        {{!-- Equipment Tab --}}
+        <div class="tab tab-equipment flexcol" data-group="primary" data-tab="equipment">
+            {{> "modules/t2k4e-loot-sheet-npc/templates/partials/equipment.hbs"}}
+        </div>
+
+        {{!-- Description Tab --}}
+        <div class="tab tab-description" data-group="primary" data-tab="description">
+            {{> "systems/t2k4e/templates/actors/parts/actor-description.hbs"}}
+        </div>
+
+    </section>
+
+</form>

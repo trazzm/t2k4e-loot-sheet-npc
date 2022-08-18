@@ -1,0 +1,31 @@
+<div class="t2k4e lsnpc chat-card"
+     data-actor-id="{{destination.id}}"
+     data-lootsheet-loot-id="{{destination.data._id}}-{{type}}-{{sourceId}}"
+     style="
+             --sheettint: {{hexToRGB flags.lootsheetnpc5e.sheettint.value flags.lootsheetnpc5e.sheettint.alpha}};
+             --avatartint: {{hexToRGB flags.lootsheetnpc5e.avatartint.value flags.lootsheetnpc5e.avatartint.alpha}};
+             --blendmode: {{flags.lootsheetnpc5e.sheettint.blendmode}};
+             --style: {{flags.lootsheetnpc5e.sheettint.style}};">
+    <div class="loot-info flexrow">
+        <span class="action-message" style="flex: 1; flex-basis: 80%"> {{actionMessage}} </span>
+        <a class="lsnpc-document-link" draggable="false" data-entity="Actor" data-uuid="{{source.uuid}}">
+            <img src="{{source.data.img}}" class="npc-icon" title="{{source.data.name}}" style="width: 24px; height:24px;">
+        </a>
+    </div>
+
+    <div class="card-content" style="">
+        <ol class="loot-results item-list">
+            {{#each items as |item|}}
+                <li class="table-result item flexrow">
+                    <div class="item-quantity">
+                        <strong>{{item.quantity}}&nbsp; &#xD7;</strong>
+                    </div>
+                    <div class="card-name">{{item.data.name}}</div>
+                    <div class="card-image">
+                        <img src="{{item.data.img}}" alt="{{name}}" style="width: 50%; height: auto;"/>
+                    </div>
+                </li>
+            {{/each}}
+        </ol>
+    </div>
+</div>

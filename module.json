@@ -1,0 +1,68 @@
+{
+  "name": "t2k4e-loot-sheet-npc",
+  "title": "T2K4E Loot Sheet NPC",
+  "description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or corpses",
+  "version": "This is auto replaced",
+  "library": "false",
+  "manifestPlusVersion": "1.2.0",
+  "minimumCoreVersion": "0.9.0",
+  "compatibleCoreVersion": "9.269",
+  "socket": true,
+  "authors": [
+    {
+      "name": "Trazzm",
+      "url": "https://github.com/trazzm",
+      "discord": "Trazzm#1390"
+    }
+  ],
+  "relationships": {
+    "requires": [],
+    "systems": ["t2k4e"]
+  },
+  "esmodules": [
+    "scripts/module.js"
+  ],
+  "styles": [
+    "styles/module.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ],
+  "packs": [
+    {
+      "name": "t2k4e-loot-sheet-items",
+      "label": "T2K4E Loot Sheet Items",
+      "system": "t2k4e",
+      "path": "./packs/items.db",
+      "entity": "Item",
+      "type": "Item"
+    },
+    {
+      "name": "t2k4e-loot-sheet-macros",
+      "label": "T2K4E Loot Sheet Macros",
+      "system": "t2k4e",
+      "path": "./packs/macros.db",
+      "entity": "Macro",
+      "type": "Macro"
+    },
+    {
+      "name": "t2k4e-loot-sheet-actors",
+      "label": "T2K4E Loot Sheet Actors",
+      "system": "t2k4e",
+      "path": "./packs/actors.db",
+      "entity": "Actor",
+      "type": "Actor"
+    }
+  ],
+  "url": "This is auto replaced",
+  "manifest": "This is auto replaced",
+  "download": "This is auto replaced",
+  "license": "LICENSE",
+  "readme": "README.md",
+  "bugs": "https://github.com/trazzm/t2k4e-loot-sheet-npc/issues",
+  "changelog": "https://raw.githubusercontent.com/trazzm/t2k4e-loot-sheet-npc/main/changelog.md"
+}

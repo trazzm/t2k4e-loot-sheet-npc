@@ -1,0 +1,17 @@
+<section class="sheet-body content">
+    {{!-- Equipment Tab --}}
+    <div class="tab tab-equipment flexcol" data-group="primary" data-tab="equipment">
+        {{> "modules/t2k4e-loot-sheet-npc/templates/partials/equipment.hbs"}}
+    </div>
+
+    {{!-- Description Tab --}}
+    <div class="tab tab-description" data-group="primary" data-tab="description">
+        {{> "systems/t2k4e/templates/actors/parts/actor-description.hbs"}}
+    </div>
+
+    {{#if isGM}}
+        <div class="tab" data-tab="gm-settings" data-group="primary">
+            {{> "modules/t2k4e-loot-sheet-npc/templates/partials/gm/gm-settings.hbs"}}
+        </div>
+    {{/if}}
+</section>
