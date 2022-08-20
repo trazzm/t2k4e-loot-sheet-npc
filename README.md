@@ -46,6 +46,7 @@ To install a module, follow these instructions:
 * The loot sheet only works for 'npc' actors.
 * Upcoming: add loot sheets for all actor types.
 * Upcoming: add the ability to trade items with other players.
+* Text is only localized to en-US, looking for people willing to translate to other languages
 
 ### Feedback
 
