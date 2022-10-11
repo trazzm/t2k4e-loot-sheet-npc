@@ -1,15 +1,12 @@
 {
-  "id": "t2k4e-loot-sheet-npc",
+  "name": "t2k4e-loot-sheet-npc",
   "title": "T2K4E Loot Sheet NPC",
   "description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or corpses",
   "version": "This is auto replaced",
   "library": "false",
   "manifestPlusVersion": "1.2.0",
-  "compatibility": {
-    "minimum": 9,
-    "maximum": 10,
-    "verified": 10
-  },
+  "minimumCoreVersion": "0.9.0",
+  "compatibleCoreVersion": "9.269",
   "socket": true,
   "authors": [
     {
@@ -20,15 +17,7 @@
   ],
   "relationships": {
     "requires": [],
-    "systems": [
-      {
-        "id": "t2k4e",
-        "type": "system",
-        "compatibility": {
-          "minimum": "2.3.0",
-          "compatible": "10.0.0"
-        }
-      }]
+    "systems": ["t2k4e"]
   },
   "esmodules": [
     "scripts/module.js"
@@ -77,4 +66,3 @@
   "bugs": "https://github.com/trazzm/t2k4e-loot-sheet-npc/issues",
   "changelog": "https://raw.githubusercontent.com/trazzm/t2k4e-loot-sheet-npc/main/changelog.md"
 }
-
